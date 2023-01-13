@@ -237,10 +237,23 @@ class Users(db.Model):
             user = cls.query.filter_by(username=username).one_or_none()
             if user is None:
                 raise UserWarning(f"User: {username} - not present")
+
+            if user.status == 'blocked':
+                raise UserWarning(f"User: {username} - was blocked by admin")
+
+            if user.status == 'pending':
+                raise UserWarning(f"User: {username} - should accept invite in mail box")
+
         else:
             user = cls.query.filter_by(email=email).one_or_none()
             if user is None:
                 raise UserWarning(f"Email: {email} - not present")
+
+            if user.status == 'blocked':
+                raise UserWarning(f"User: {username} - was blocked by admin")
+
+            if user.status == 'pending':
+                raise UserWarning(f"User: {username} - should accept invite in mail box")
 
         if cls.verify_hash(password=password, hash_=user.password) is False:
             raise PermissionError('Wrong password')
