@@ -1,0 +1,2 @@
+microservice-template-core==2.2.9
+requests-cache==0.8.1
